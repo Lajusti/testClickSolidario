@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row" style="margin-top: 40px; margin-bottom: 40px;">
+		    	<div class="col-md-8 col-sm-12">
+		    		<div class="card">						
+						<div class="card-header">
+							<h4 class="card-title">Productos</h4>
+						</div>
+						<div class="card-block">
+			            	<p>Tralala - 190 €</p>			            	
+			            	<p>Tralali - 20 €</p>	
+				  		</div>
+					</div>
+		   		</div>
+		   		<div class="col-md-4 col-sm-12">
+		   			<div class="card">				
+		   				<div class="card-header">
+		   					<h4 class="card-title">Finalizar compra</h4>
+		   				</div>		
+						<div class="card-block" style="padding-bottom:0px;">							
+							<p style="font-weight: bold">Productos: 210 €</p>
+			            	<p style="font-weight: bold; display: none" id="solidario">Click Solidario: 1 €</p>
+			            	<hr/>
+			            	<p style="font-weight: bold">Total: <span id="total">210</span> €</p>   				    		
+				  		</div>
+				  		<div class="card-footer">
+				  			<a href="#" id="go" class="btn btn-primary btn-block">Finalizar compra</a>
+				  		</div>
+					</div>
+		   		</div>
+		   	</div>
+		   	<div class="row" id="loading" style="margin-top: 40px; margin-bottom: 40px;">
+			   	<div class="col-md-12 text-center">
+			   		<span><i class="fa fa-circle-o-notch fa-spin" style="font-size:60px; color:blue;"></i></span>
+			   	</div>
+		   	</div>
+		   	<div class="row" id="clickSolidario" style="margin-top: 40px; margin-bottom: 40px; display: none;">
+		   		<div class="col-md-12">
+		   			<div class="card">				
+		   				<div class="card-header">
+		   					<h4 class="card-title" id="tituloSolidario"></h4>
+		   				</div>		
+		   				<img class="card-img-top" id="click-img" src="" alt=""/>
+						<div class="card-block" style="padding-bottom:0px;">							
+							<p id="descripcion-solidario"></p>
+							<input type="checkbox" id="_stckC_check"/>	    
+							<label>Unete a los <span id="participantes"></span> participantes que han apoyado la <a id="linkCampaign" target="_blank" href="">campaña</a></label>       	
+				  		</div>
+				  		<div class="card-footer">
+				  			<a id="linkStockcrowd" target="_blank" href=""><img id="imgStockcrowd" src=""/></a>
+				  		</div>
+					</div>
+		   		</div>
+		   	</div>
+		   	<form action="/validate" method="post" id="formulario">
+  				<input type="hidden" name="value" id="value"/>
+  				<input type="hidden" name="idDonation" id="idDonation"/>  				
+  			</form>
+		   	<div id="clickStockCrowd" campaign="7" speaker="1" visible="false"></div>
+			<script type="text/javascript">
+				function stockcrowdDataLoaded(data) {
+					$('#loading').hide();
+					$('#tituloSolidario').html(data.title);
+					$('#descripcion-solidario').html(data.message);
+					$('#participantes').html(data.participants);
+					$('#click-img').attr("src", data.urlImage);
+					$('#linkStockcrowd').attr("href", data.urlStockCrowd);
+					$('#linkCampaign').attr("href", data.urlCampaign);
+					$('#imgStockcrowd').attr("src", data.urlImgStockCrowd);
+					$('#clickSolidario').show();					
+				}
+			</script>			
+			<script src="https://develop.stockcrowd.com/api/cs/widget"></script>
+		</div>
+		<script type="text/javascript">	   
+			
+	    	$(document).ready(function(){
+	    		stckC.bind("change", function (){
+	    			if (stckC.isChecked()) {
+	    				$('#solidario').show();
+	    				$('#total').html(parseInt($('#total').html()) + 1);
+	    			} else {
+	    				$('#solidario').hide();
+	    				$('#total').html(parseInt($('#total').html() - 1));
+	    			}	    			
+	    		});	
+	    		
+	    		$('#go').click(function() {
+	    			$('#value').val(parseInt($('#total').html()));
+	    			if (stckC.isChecked())
+	    				$('#idDonation').val(stckC.id);
+	    			$('#formulario').submit();
+	    		});	    	    			
+	    		
+	    	});
+	    </script>
+	</body>
+</html>
