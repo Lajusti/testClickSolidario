@@ -19,7 +19,9 @@ En el código veremos cómo se integra el click solidario de [StockCrowd](https:
 
 ## Ejecución ##
 
-Una vez descargado el código nos situamos en el directorio descargado y ejecutamos la orden maven: **mvn package**, una vez finaliza la ejecución de la instrucción entramos en el directorio **target** generado y ejecutamos la siguiente instrucción: **java -jar testClickSolidario-1.0.jar**.
+Una vez descargado el código nos situamos en el directorio descargado y ejecutamos la orden maven: **mvn package**. 
+
+Una vez finaliza la ejecución de la instrucción, entramos en el directorio **target**, generado, y ejecutamos la siguiente instrucción: **java -jar testClickSolidario-1.0.jar**.
 
 Ahora ya tenemos levantado la aplicación web para testear la integración.
 
